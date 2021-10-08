@@ -1,0 +1,185 @@
+version: 2
+
+jobs:
+  us-east-1-build:
+    docker:
+      - image: paulmarsicloud/terraform-aws-ssh:1.0
+    environment:
+      TF_VAR_public_ip: <REPLACE ME>
+      TF_VAR_region: us-east-1
+    working_directory: ~/openvpn-ephemeral
+    steps:
+      - checkout
+      - run:
+          name: list
+          command: ls
+      - run:
+          name: build
+          command: |
+            terraform init
+            terraform apply -auto-approve
+      - store_artifacts:
+          path: ~/openvpn-ephemeral/openvpn.ovpn
+      - store_artifacts:
+          path: ~/openvpn-ephemeral/terraform.tfstate
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  us-east-1-destroy:
+    docker:
+      - image: paulmarsicloud/terraform-aws-ssh:1.0
+    environment:
+      TF_VAR_public_ip: <REPLACE ME>
+      TF_VAR_region: us-east-1
+    working_directory: ~/openvpn-ephemeral
+    steps:
+      - attach_workspace:
+          at: .
+      - checkout
+      - run:
+          name: list
+          command: ls
+      - run:
+          name: destroy
+          command: |
+            terraform init
+            terraform destroy -auto-approve
+
+  us-west-2-build:
+    docker:
+      - image: paulmarsicloud/terraform-aws-ssh:1.0
+    environment:
+      TF_VAR_public_ip: <REPLACE ME>
+      TF_VAR_region: us-west-2
+    working_directory: ~/openvpn-ephemeral
+    steps:
+      - checkout
+      - run:
+          name: list
+          command: ls
+      - run:
+          name: build
+          command: |
+            terraform init
+            terraform apply -auto-approve
+      - store_artifacts:
+          path: ~/openvpn-ephemeral/openvpn.ovpn
+      - store_artifacts:
+          path: ~/openvpn-ephemeral/terraform.tfstate
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  us-west-2-destroy:
+    docker:
+      - image: paulmarsicloud/terraform-aws-ssh:1.0
+    environment:
+      TF_VAR_public_ip: <REPLACE ME>
+      TF_VAR_region: us-west-2
+    working_directory: ~/openvpn-ephemeral
+    steps:
+      - attach_workspace:
+          at: .
+      - checkout
+      - run:
+          name: list
+          command: ls
+      - run:
+          name: destroy
+          command: |
+            terraform init
+            terraform destroy -auto-approve
+
+  ap-southeast-2-build:
+    docker:
+      - image: paulmarsicloud/terraform-aws-ssh:1.0
+    environment:
+      TF_VAR_public_ip: <REPLACE ME>
+      TF_VAR_region: ap-southeast-2
+    working_directory: ~/openvpn-ephemeral
+    steps:
+      - checkout
+      - run:
+          name: list
+          command: ls
+      - run:
+          name: build
+          command: |
+            terraform init
+            terraform apply -auto-approve
+      - store_artifacts:
+          path: ~/openvpn-ephemeral/openvpn.ovpn
+      - store_artifacts:
+          path: ~/openvpn-ephemeral/terraform.tfstate
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  ap-southeast-2-destroy:
+    docker:
+      - image: paulmarsicloud/terraform-aws-ssh:1.0
+    environment:
+      TF_VAR_public_ip: <REPLACE ME>
+      TF_VAR_region: ap-southeast-2
+    working_directory: ~/openvpn-ephemeral
+    steps:
+      - attach_workspace:
+          at: .
+      - checkout
+      - run:
+          name: list
+          command: ls
+      - run:
+          name: destroy
+          command: |
+            terraform init
+            terraform destroy -auto-approve
+
+workflows:
+  version: 2
+  us-east-1:
+    jobs:
+      - approve_build:
+          type: approval
+      - us-east-1-build:
+          requires:
+            - approve_build
+      - approve_destroy:
+          type: approval
+          requires:
+            - us-east-1-build
+      - us-east-1-destroy:
+          requires:
+            - approve_destroy
+  us-west-2:
+    jobs:
+      - approve_build:
+          type: approval
+      - us-west-2-build:
+          requires:
+            - approve_build
+      - approve_destroy:
+          type: approval
+          requires:
+            - us-west-2-build
+      - us-west-2-destroy:
+          requires:
+            - approve_destroy
+  ap-southeast-2:
+    jobs:
+      - approve_build:
+          type: approval
+      - ap-southeast-2-build:
+          requires:
+            - approve_build
+      - approve_destroy:
+          type: approval
+          requires:
+            - ap-southeast-2-build
+      - ap-southeast-2-destroy:
+          requires:
+            - approve_destroy
