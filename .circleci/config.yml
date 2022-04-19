@@ -11,9 +11,6 @@ jobs:
     steps:
       - checkout
       - run:
-          name: list
-          command: ls
-      - run:
           name: build
           command: |
             terraform init
@@ -39,9 +36,6 @@ jobs:
           at: .
       - checkout
       - run:
-          name: list
-          command: ls
-      - run:
           name: destroy
           command: |
             terraform init
@@ -56,9 +50,6 @@ jobs:
     working_directory: ~/openvpn-ephemeral
     steps:
       - checkout
-      - run:
-          name: list
-          command: ls
       - run:
           name: build
           command: |
@@ -85,9 +76,6 @@ jobs:
           at: .
       - checkout
       - run:
-          name: list
-          command: ls
-      - run:
           name: destroy
           command: |
             terraform init
@@ -102,9 +90,6 @@ jobs:
     working_directory: ~/openvpn-ephemeral
     steps:
       - checkout
-      - run:
-          name: list
-          command: ls
       - run:
           name: build
           command: |
@@ -130,9 +115,6 @@ jobs:
       - attach_workspace:
           at: .
       - checkout
-      - run:
-          name: list
-          command: ls
       - run:
           name: destroy
           command: |

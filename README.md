@@ -1,7 +1,7 @@
 # OpenVPN Ephemeral CircleCI Template
 
 ## Overview
-This repo provides an example template that supports a CircleCI pipeline building and destroying an OpenVPN EC2 server on demand. This template makes use of the [paulmarsicloud/openvpn-ephemeral/aws](https://registry.terraform.io/modules/paulmarsicloud/openvpn-ephemeral/aws/latest) Terraform Module.
+This repo provides an example template that supports a CircleCI pipeline building and destroying an OpenVPN EC2 server on demand. This template makes use of the [paulmarsicloud/openvpn-ephemeral/aws](https://registry.terraform.io/modules/paulmarsicloud/openvpn-ephemeral/aws/latest) Terraform Module and the pipeline is created using the [paulmarsicloud/terraform-aws-ssh](https://hub.docker.com/r/paulmarsicloud/terraform-aws-ssh) Docker container.
 
 ## Pre-requisites
 In order to utilize this template repo, you will need an AWS Account with an IAM user that has programmatic access, and OpenVPN Connect on your local machine.
